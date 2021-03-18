@@ -1,0 +1,23 @@
+name: 'rpmdev-bumpspec'
+
+description: 'Run rpmdev-bumpspec'
+
+inputs:
+  comment:
+    description: 'changelog comment (default: "- rebuilt")'
+    required: false
+  userstring:
+    description: 'user name+email string (default: output from rpmdev-packager(1))'
+    required: false
+  new:
+    description: 'set new version and reset/set release (simple spec files only)'
+    required: false
+  specfile:
+    description: 'specfile to be bumped'
+    required: true
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.specfile }}

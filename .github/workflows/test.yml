@@ -1,0 +1,25 @@
+---
+name: Test Bump RPM Specfile
+
+on: [workflow_dispatch]
+
+jobs:
+  bump_spec_file:
+    runs-on: ubuntu-latest
+    name: Bump RPM Specfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Export variables for rpmdev-bumpspec action
+        run: |
+            echo "NEW_VERSION=2.11" >> $GITHUB_ENV
+      - name: Run rpmdev-bumpspec action from root directory
+        uses: ./
+        id: rpmdev-bumpspec
+        with:
+          specfile: "sample.spec"
+          new: ${{ env.NEW_VERSION }}
+          userstring: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
+          # comment: 'New vesion'
+      - name: Print Specfile diff
+        run: git diff sample.spec
